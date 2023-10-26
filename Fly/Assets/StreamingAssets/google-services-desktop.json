@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "136025477361",
+    "firebase_url": "https://flyanimal-16edf-default-rtdb.firebaseio.com",
+    "project_id": "flyanimal-16edf",
+    "storage_bucket": "flyanimal-16edf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136025477361:android:82cd260e1e7aec910e5950",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.Fly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm0-bkVin5QGJvPEZrZWLNf1OioTR5JkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
