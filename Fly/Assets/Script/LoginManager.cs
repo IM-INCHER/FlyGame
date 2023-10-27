@@ -8,6 +8,9 @@ public class LoginManager : MonoBehaviour
     public InputField email;
     public InputField password;
 
+    public GameObject loginUI;
+    public GameObject nicknameUI;
+
     public Text outputText;
     void Start()
     {
@@ -21,18 +24,25 @@ public class LoginManager : MonoBehaviour
         outputText.text += FireBaseAuthManager.Instance.UserId;
     }
 
-    public void Create()
+    public async void Create()
     {
         string e = email.text;
         string p = password.text;
 
-        FireBaseAuthManager.Instance.Create(e, p);
+        if(await FireBaseAuthManager.Instance.Create(e, p))
+        {
+            loginUI.SetActive(false);
+            nicknameUI.SetActive(true);
+        }
         ResetText();
     }
 
     public void Login()
     {
-        FireBaseAuthManager.Instance.Login(email.text, password.text);
+        string e = email.text;
+        string p = password.text;
+
+        FireBaseAuthManager.Instance.Login(e, p);
         ResetText();
     }
 

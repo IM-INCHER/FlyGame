@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
+using UnityEditor.VersionControl;
 
 public class FireBaseAuthManager
 {
@@ -53,28 +55,50 @@ public class FireBaseAuthManager
         }
     }
 
-    public void Create(string email, string password)
-    {
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
-        {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("회원가입취소");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("회원가입실패");
-                foreach (var exception in task.Exception.InnerExceptions)
-                {
-                    Debug.LogError($"Error: {exception.Message}");
-                }
-                return;
-            }
+    //public void Create(string email, string password)
+    //{
+    //    auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+    //    {
+    //        if (task.IsCanceled)
+    //        {
+    //            Debug.LogError("회원가입취소");
+    //            return;
+    //        }
+    //        if (task.IsFaulted)
+    //        {
+    //            Debug.LogError("회원가입실패");
+    //            foreach (var exception in task.Exception.InnerExceptions)
+    //            {
+    //                Debug.LogError($"Error: {exception.Message}");
+    //            }
+    //            return;
+    //        }
 
+    //        Debug.Log("회원가입 완료");
+    //    });
+    //}
+
+    public async Task<bool> Create(string email, string password)
+    {
+        var task = auth.CreateUserWithEmailAndPasswordAsync(email, password);
+
+        try
+        {
+            await task;
             Debug.Log("회원가입 완료");
-        });
+            return true; // 회원가입 성공
+        }
+        catch (System.Exception ex)
+        {
+            foreach (var exception in task.Exception.InnerExceptions)
+            {
+                Debug.LogError(ex.Message);
+            }
+            Debug.LogError("회원가입 실패");
+            return false; // 회원가입 실패
+        }
     }
+
 
     public void Login(string email, string password)
     {
@@ -94,6 +118,31 @@ public class FireBaseAuthManager
             Debug.Log("로그인 완료");
         });
     }
+
+    //public async Task<bool> Login(string email, string password)
+    //{
+    //    var task = auth.SignInWithEmailAndPasswordAsync(email, password);
+
+    //    try
+    //    {
+    //        await task;
+    //        Debug.Log("로그인 완료");
+    //        return true; // 로그인 성공
+    //    }
+    //    catch (System.Exception ex)
+    //    {
+    //        if (task.IsCanceled)
+    //        {
+    //            Debug.LogError("로그인 취소");
+    //            return false;
+    //        }
+    //        else
+    //        {
+    //            Debug.LogError("로그인 실패");
+    //            return false;
+    //        }
+    //    }
+    //}
 
     public void Logout()
     {
