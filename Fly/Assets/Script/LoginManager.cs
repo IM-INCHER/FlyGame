@@ -7,15 +7,19 @@ public class LoginManager : MonoBehaviour
 {
     public InputField email;
     public InputField password;
+    public InputField NickName;
 
     public GameObject loginUI;
     public GameObject nicknameUI;
 
     public Text outputText;
+
     void Start()
     {
         FireBaseAuthManager.Instance.init();
         FireBaseAuthManager.Instance.LoginState += OnChangedState;
+
+        FireBaseDatabase.Instance.init();
     }
 
     private void OnChangedState(bool sign)
@@ -34,7 +38,7 @@ public class LoginManager : MonoBehaviour
             loginUI.SetActive(false);
             nicknameUI.SetActive(true);
         }
-        ResetText();
+        //ResetText();
     }
 
     public void Login()
@@ -56,5 +60,21 @@ public class LoginManager : MonoBehaviour
     {
         FireBaseAuthManager.Instance.Logout();
         ResetText();
+    }
+
+    public void SetNickName()
+    {
+        if (NickName.text.Length > 0)
+        {
+            Debug.Log(NickName.text);
+            Debug.Log(email.text);
+            Debug.Log(FireBaseAuthManager.Instance.UserId);
+
+            FireBaseDatabase.Instance.writeNewUser(FireBaseAuthManager.Instance.UserId, NickName.text, email.text);
+            outputText.text = NickName.text + "님 환영합니다.";
+            NickName.text = "";
+        }
+        else
+            outputText.text = "실패하셨습니다. 닉네임을 다시 입력해주세요";
     }
 }

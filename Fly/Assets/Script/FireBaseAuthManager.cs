@@ -73,7 +73,6 @@ public class FireBaseAuthManager
     //            }
     //            return;
     //        }
-
     //        Debug.Log("회원가입 완료");
     //    });
     //}
