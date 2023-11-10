@@ -14,6 +14,7 @@ public class LoginManager : MonoBehaviour
 
     public Text outputText;
 
+
     void Start()
     {
         FireBaseAuthManager.Instance.init();
@@ -38,16 +39,18 @@ public class LoginManager : MonoBehaviour
             loginUI.SetActive(false);
             nicknameUI.SetActive(true);
         }
-        //ResetText();
     }
 
-    public void Login()
+    public async void Login()
     {
         string e = email.text;
         string p = password.text;
 
-        FireBaseAuthManager.Instance.Login(e, p);
-        ResetText();
+        if (await FireBaseAuthManager.Instance.Login(e, p))
+        {
+            FireBaseDatabase.Instance.readUser(FireBaseAuthManager.Instance.UserId.ToString());
+            ResetText();
+        }
     }
 
     private void ResetText()

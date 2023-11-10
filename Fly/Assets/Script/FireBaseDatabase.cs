@@ -21,7 +21,7 @@ public class User
     }
 }
 
-public class FireBaseDatabase : MonoBehaviour
+public class FireBaseDatabase
 {
     private static FireBaseDatabase instance = null;
 
@@ -41,24 +41,36 @@ public class FireBaseDatabase : MonoBehaviour
 
     public void init()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
-        {
-            FirebaseApp app = FirebaseApp.DefaultInstance;
-            reference = FirebaseDatabase.DefaultInstance.RootReference;
-        });
-
+        FirebaseApp app = FirebaseApp.DefaultInstance;
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     public void writeNewUser(string userId, string name, string email)
     {
-        FireBaseAuthManager.Instance.LoginState = OnChangedState;
-
         User user = new User(name, email);
         string json = JsonUtility.ToJson(user);
 
         Debug.Log(userId);
         Debug.Log(json);
 
-        FirebaseDatabase.DefaultInstance.RootReference.Child("users/").Child(userId).SetValueAsync(json);
+        reference.Child("users/").Child(userId).SetValueAsync(json);
+    }
+
+    public void readUser(string userID)
+    {
+        Debug.Log(userID);
+
+        reference.Child("users/").Child(userID).GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+
+            }
+            else if (task.IsCompleted) 
+            {
+                DataSnapshot snapshot = task.Result;
+                Debug.Log("value = " + snapshot.Value);
+            }
+        });
     }
 }
