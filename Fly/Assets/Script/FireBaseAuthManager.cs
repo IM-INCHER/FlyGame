@@ -76,23 +76,6 @@ public class FireBaseAuthManager
         }
     }
 
-    //public void Login(string email, string password)
-    //{
-    //    auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
-    //    {
-    //        if (task.IsCanceled)
-    //        {
-    //            Debug.LogError("로그인 취소");
-    //            return;
-    //        }
-    //        if (task.IsFaulted)
-    //        {
-    //            Debug.LogError("로그인 실패");
-    //            return;
-    //        }
-    //        Debug.Log("로그인 완료");
-    //    });
-    //}
 
     public async Task<bool> Login(string email, string password)
     {

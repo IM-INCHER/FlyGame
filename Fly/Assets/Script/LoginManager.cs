@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class LoginManager : MonoBehaviour
 
     public Text outputText;
 
-
     void Start()
     {
         FireBaseAuthManager.Instance.init();
@@ -25,8 +25,8 @@ public class LoginManager : MonoBehaviour
 
     private void OnChangedState(bool sign)
     {
-        outputText.text = sign ? "로그인 : " : "로그아웃 : ";
-        outputText.text += FireBaseAuthManager.Instance.UserId;
+        //outputText.text = sign ? "로그인 : " : "로그아웃 : ";
+        //outputText.text += FireBaseAuthManager.Instance.UserId;
     }
 
     public async void Create()
@@ -48,8 +48,9 @@ public class LoginManager : MonoBehaviour
 
         if (await FireBaseAuthManager.Instance.Login(e, p))
         {
-            FireBaseDatabase.Instance.readUser(FireBaseAuthManager.Instance.UserId.ToString());
             ResetText();
+
+            SceneManager.LoadScene(1);
         }
     }
 

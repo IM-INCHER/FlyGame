@@ -56,10 +56,10 @@ public class FireBaseDatabase
         reference.Child("users/").Child(userId).SetValueAsync(json);
     }
 
+    //public async Task<bool>
+
     public void readUser(string userID)
     {
-        Debug.Log(userID);
-
         reference.Child("users/").Child(userID).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -70,6 +70,10 @@ public class FireBaseDatabase
             {
                 DataSnapshot snapshot = task.Result;
                 Debug.Log("value = " + snapshot.Value);
+
+                string json = snapshot.Value.ToString();
+                User user = JsonUtility.FromJson<User>(json);
+                PlayerPrefs.SetString("username", user.username);
             }
         });
     }
