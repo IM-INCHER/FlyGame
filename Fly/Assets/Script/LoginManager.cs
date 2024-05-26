@@ -13,6 +13,8 @@ public class LoginManager : MonoBehaviour
     public GameObject loginUI;
     public GameObject nicknameUI;
 
+    public GoogleSheetsManager GoogleSheet;
+
     public Text outputText;
 
     void Start()
@@ -50,7 +52,15 @@ public class LoginManager : MonoBehaviour
         {
             ResetText();
 
-            SceneManager.LoadScene(1);
+            if (await FireBaseDatabase.Instance.readUser(FireBaseAuthManager.Instance.UserId.ToString()))
+            {
+                GoogleSheet.LogIn();
+                SceneManager.LoadScene(1);
+            }
+        }
+        else
+        {
+            outputText.text = "로그인에 실패 하셨습니다.";
         }
     }
 
@@ -66,7 +76,7 @@ public class LoginManager : MonoBehaviour
         ResetText();
     }
 
-    public void SetNickName()
+    public async void SetNickName()
     {
         if (NickName.text.Length > 0)
         {
@@ -77,8 +87,19 @@ public class LoginManager : MonoBehaviour
             FireBaseDatabase.Instance.writeNewUser(FireBaseAuthManager.Instance.UserId, NickName.text, email.text);
             outputText.text = NickName.text + "님 환영합니다.";
             NickName.text = "";
+
+            if (await FireBaseDatabase.Instance.readUser(FireBaseAuthManager.Instance.UserId.ToString()))
+            {
+                GoogleSheet.LogIn();
+                SceneManager.LoadScene(1);
+            }
         }
         else
             outputText.text = "실패하셨습니다. 닉네임을 다시 입력해주세요";
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 }

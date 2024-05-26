@@ -1,23 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainScene : MonoBehaviour
 {
-    public string NickName;
+    public Text NickName;
 
     void Start()
     {
-        Debug.Log(FireBaseAuthManager.Instance.UserId);
-        FireBaseDatabase.Instance.readUser(FireBaseAuthManager.Instance.UserId.ToString());
-
-        NickName = PlayerPrefs.GetString("username");
-        Debug.Log("로그인한 유저의 닉네임은 = " + NickName);
+        NickName.text = FireBaseDatabase.Instance.loginUser.username;
     }
 
     void Update()
     {
-        NickName = PlayerPrefs.GetString("username");
-        Debug.Log("로그인한 유저의 닉네임은 = " + NickName);
+        
     }
 }
